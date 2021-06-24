@@ -2,7 +2,7 @@
   <br>
   <a><img src="./img/coderHub.sa.png" alt="quran_suras - img"></a>
   <br>
-  coderHubSa
+  coderHub
   <br>
 </h1>
 
@@ -28,10 +28,10 @@
 
 ## Installation
 
-Use [GitHub](https://github.com) to install coderHubSa.
+Use [GitHub](https://github.com) to install coderHub.
 
 ```bash
-git clone https://github.com/Awiteb/coderHubSa
+git clone https://github.com/Awiteb/coderHub
 ```
 
 ## Features
@@ -43,7 +43,7 @@ git clone https://github.com/Awiteb/coderHubSa
 
 **get all challenges or by difficulty:**
 ```python
-from coderhub import CoderHub
+from coderHub import CoderHub
 
 coder_hub = CoderHub()
 # get all challenges
@@ -78,7 +78,7 @@ print(coder_hub.get_challenges(difficulty="easy"))
 
 **get challenge by id:**
 ```python
-from coderhub import CoderHub
+from coderHub import CoderHub
 
 coder_hub = CoderHub()
 print(coder_hub.get_challenge_by_id('3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4'))
