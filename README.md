@@ -38,6 +38,7 @@ git clone https://github.com/Awiteb/coderHub
 
 * get all challenges or by difficulty
 * get challenge by id
+* get all languages info or by language name
 
 ## Usage
 
