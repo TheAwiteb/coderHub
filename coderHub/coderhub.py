@@ -61,7 +61,7 @@ class CoderHub():
 
         Raises:
             Exception: Language not found
-.content
+            
         Returns:
             dict: object of language or languages
         """
