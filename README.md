@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a><img src="./img/coderHub.sa.png" alt="quran_suras - img"></a>
+  <a><img src="./img/coderHub.sa.jpeg" alt="coderHub.sa - img"></a>
   <br>
   coderHub
   <br>
