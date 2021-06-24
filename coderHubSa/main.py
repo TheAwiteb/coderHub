@@ -32,7 +32,7 @@ class CoderHub():
             else:
                 raise Exception(f"difficulty must be {' or '.join(difficulty_list)}")
         else:
-            return challenges['result']
+            return {'result':challenges['result']}
 
     def get_challenge_by_id(self, id: str):
         """ Returns challenge object by id
