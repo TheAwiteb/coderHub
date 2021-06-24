@@ -2,13 +2,12 @@
 import requests
 from typing import Optional, Union
 
-get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
-challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
-
 
 class CoderHub():
     def __init__(self):
-        pass
+        self.get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
+        self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
+
     def get_challengs(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
         difficulty should be in ['easy', 'normal', 'hard']
@@ -22,7 +21,7 @@ class CoderHub():
         Returns:
             dict: dictionary of challenges
         """
-        challenges = requests.get(challenges_url).json()
+        challenges = requests.get(self.challenges_url).json()
         difficulty_list = ['easy', 'normal', 'hard']
         if difficulty:
             if difficulty in difficulty_list:
@@ -47,7 +46,7 @@ class CoderHub():
         Returns:
             dict: object of challenge
         """
-        request = requests.get(get_challenge_url.format(id))
+        request = requests.get(self.get_challenge_url.format(id))
         if request.status_code == 200:
             return request.json()
         else:
