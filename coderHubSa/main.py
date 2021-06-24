@@ -35,11 +35,11 @@ class CoderHub():
         else:
             return challenges['result']
 
-    def get_challenge_by_id(self, id: int):
+    def get_challenge_by_id(self, id: str):
         """ Returns challenge object by id
 
         Args:
-            id (int): id of challenge
+            id (str): id of challenge
 
         Raises:
             Exception: Invalid challenge id
@@ -47,7 +47,7 @@ class CoderHub():
         Returns:
             dict: object of challenge
         """
-        request = requests.get(get_challenge_url.format(str(id)))
+        request = requests.get(get_challenge_url.format(id))
         if request.status_code == 200:
             return request.json()
         else:
