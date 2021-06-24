@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 import requests
 from typing import Optional, Union
 
