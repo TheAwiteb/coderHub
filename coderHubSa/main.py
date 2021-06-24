@@ -51,4 +51,4 @@ class CoderHub():
         if request.status_code == 200:
             return request.json()
         else:
-            raise Exception("Invalid challenge id: challenge id not found")
+            raise Exception("Invalid challenge id: challenge not found")
