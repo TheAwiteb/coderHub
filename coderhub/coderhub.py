@@ -8,7 +8,7 @@ class CoderHub():
         self.get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
         self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
 
-    def get_challengs(self, difficulty: Optional[Union[str, None]] = None):
+    def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
         difficulty should be in ['easy', 'normal', 'hard']
 
