@@ -1,1 +1,1 @@
-from coderhub import CoderHub
+from .coderhub import CoderHub
