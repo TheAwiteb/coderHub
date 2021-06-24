@@ -7,6 +7,7 @@ class CoderHub():
     def __init__(self):
         self.get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
         self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
+        self.programming_languages_url= "https://api.coderhub.sa/api/challenges/programming-languages"
 
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
@@ -51,3 +52,35 @@ class CoderHub():
             return request.json()
         else:
             raise Exception("Invalid challenge id: challenge not found")
+    
+    def get_languages(self, language: Optional[Union[str, None]] = None):
+        """ Returns all objects of languages if language = None, else object by language
+
+        Args:
+            language (Optional[Union[str, None]], optional): language you want. Defaults to None.
+
+        Raises:
+            Exception: Language not found
+.content
+        Returns:
+            dict: object of language or languages
+        """
+        languages = list(map(
+                    lambda lang: {'id': lang['id'], 
+                                        'name': lang['name'].lower(), 
+                                            'version': lang['version']},
+                    requests.get(self.programming_languages_url).json()))
+        if language:
+            if type(language) == str:
+                languages = list(filter(
+                    lambda lang: lang['name'] == language.lower(),
+                    languages
+                ))
+            else:
+                languages = [] # empty list, because invalid language
+            if languages:
+                return languages[0]
+            else:
+                raise Exception(f"Invalid language, '{language}' not found")
+        else:
+            return {'result':languages}

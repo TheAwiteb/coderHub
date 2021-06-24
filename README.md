@@ -101,6 +101,46 @@ print(coder_hub.get_challenge_by_id('3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4'))
 </details>
 <br><br>
 
+**get languages:**
+```python
+from coderHub import CoderHub
+
+coder_hub = CoderHub()
+
+# all languages
+print(coder_hub.get_languages())
+
+# language by name
+print(coder_hub.get_languages(language="python"))
+```
+<details>
+<summary> Example Result</summary>
+
+```json
+// all languages
+
+{
+  'result': [
+  {'id': 6, 'name': 'swift', 'version': 'swift 4.2.2'}, 
+  {'id': 3, 'name': 'python', 'version': 'python 3.5.3'}, 
+  {'id': 2, 'name': 'javascript', 'version': 'SMonkey 68.6.0'}, 
+  {'id': 1, 'name': 'java', 'version': 'jdk 8u51'}, 
+  {'id': 8, 'name': 'c#', 'version': 'Mono 4.0.2'}
+  ]
+}
+
+// language by name
+{
+  'id': 3, 
+  'name': 'python', 
+  'version': 
+  'python 3.5.3'
+}
+```
+
+</details>
+<br><br>
+
 
 ## LICENSE
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
