@@ -8,6 +8,7 @@ class CoderHub():
         self.get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
         self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
         self.programming_languages_url= "https://api.coderhub.sa/api/challenges/programming-languages"
+        self.leaderBoard_url = "https://api.coderhub.sa/api/leaderboard/?language={0}&offset=0&limit=10&type={1}"
 
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
@@ -84,3 +85,41 @@ class CoderHub():
                 raise Exception(f"Invalid language, '{language}' not found")
         else:
             return {'result':languages}
+
+    def get_leaderBoard(self, language: Optional[Union[str, "java"]] = "java",
+                        type: Optional[Union[str, "ALL"]] = "ALL"):
+        """ Returns the first 10 ranks in leader boards objects of java language and for ALL time
+            if language = "java" or type="ALL" , else object by specific language or at different type of times
+
+              Args:
+                  language (Optional[Union[str, "java"]], "java"): language you want. Defaults to "java".
+                  type (Optional[Union[str, "ALL"]], "ALL"): language you want. Defaults to "ALL".
+
+              Raises:
+                  Exception: Language or Type not found
+
+              Returns:
+                  dict: object of the first 10 ranks in leader boards objects for java language all the time
+                        or the first 10 ranks in leader boards objects for other language and other type of times
+              """
+        languages = list(map(
+            lambda lang: {'id': lang['id'],
+                          'name': lang['name'].lower(), },
+            requests.get(self.programming_languages_url).json()))
+        types = ['ALL', 'DAILY', 'WEEKLY']
+
+        if language:
+            languages = list(filter(
+                lambda lang: lang['name'] == language.lower(),
+                languages
+            ))
+            if languages:
+                lang = str(languages[0]['id'])
+            else:
+                raise Exception(f"Invalid language, '{language}' not found")
+        if type:
+            if not (type in types):
+                raise Exception(f"Invalid type, '{type}' not found")
+
+        request = requests.get(self.leaderBoard_url.format(lang, type)).json()
+        return request
