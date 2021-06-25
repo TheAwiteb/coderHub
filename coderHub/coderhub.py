@@ -86,21 +86,20 @@ class CoderHub():
         else:
             return {'result':languages}
 
-    def get_leaderBoard(self, language: Optional[Union[str, "java"]] = "java",
-                        type: Optional[Union[str, "ALL"]] = "ALL"):
-        """ Returns the first 10 ranks in leader boards objects of java language and for ALL time
-            if language = "java" or type="ALL" , else object by specific language or at different type of times
+    def get_leaderBoard(self, language: str, type: Optional[Union[str, "ALL"]] = "ALL"):
+        """ Returns the first 10 ranks in leader boards objects of at all the time for specific language
+            if type="ALL" , else object at different type of times
 
               Args:
-                  language (Optional[Union[str, "java"]], "java"): language you want. Defaults to "java".
+                  language str : language you want.
                   type (Optional[Union[str, "ALL"]], "ALL"): language you want. Defaults to "ALL".
 
               Raises:
-                  Exception: Language or Type not found
+                  Exception: Type not found
 
               Returns:
-                  dict: object of the first 10 ranks in leader boards objects for java language all the time
-                        or the first 10 ranks in leader boards objects for other language and other type of times
+                  dict: object of the first 10 ranks in leader boards objects at all the time for specific language
+                        or the first 10 ranks in leader boards objects for a language and other type of times
               """
         languages = list(map(
             lambda lang: {'id': lang['id'],
