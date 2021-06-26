@@ -38,6 +38,13 @@ class CoderHub():
                 raise Exception(f"difficulty must be {' or '.join(difficulty_list)}")
         else:
             return {'result':challenges['result']}
+    
+    def search_challenges(self, word: str):
+        data = requests.get(self.challenges_url+word).json()
+        if data['count'] > 0:
+            return data
+        else:
+            raise Exception("There are no challenges available about '%s'" % word)
 
     def get_challenge_by_id(self, id: str):
         """ Returns challenge object by id
