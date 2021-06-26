@@ -86,39 +86,33 @@ class CoderHub():
         else:
             return {'result':languages}
 
-    def get_leaderBoard(self, language: str, type: Optional[Union[str, "ALL"]] = "ALL"):
-        """ Returns the first 10 ranks in leader boards objects of at all the time for specific language
-            if type="ALL" , else object at different type of times
+    def get_leaderBoard(self, language: str, search_type: Optional[Union[str]] = "ALL"):
+        """ get first 10 users in leaderboard of language, in all time or by type
+            type should be in [ALL, DAILY, WEEKLY]
 
-              Args:
-                  language str : language you want.
-                  type (Optional[Union[str, "ALL"]], "ALL"): language you want. Defaults to "ALL".
+        Args:
+            language (str): The programming language you want to have its own leaderboard 
+            search_type (Optional[Union[str]], optional): type of search. Defaults to "ALL".
 
-              Raises:
-                  Exception: Type not found
+        Raises:
+            Exception: Unknown language, language not found
+            Exception: invalid search type, type not found
 
-              Returns:
-                  dict: object of the first 10 ranks in leader boards objects at all the time for specific language
-                        or the first 10 ranks in leader boards objects for a language and other type of times
-              """
-        languages = list(map(
-            lambda lang: {'id': lang['id'],
-                          'name': lang['name'].lower(), },
-            requests.get(self.programming_languages_url).json()))
-        types = ['ALL', 'DAILY', 'WEEKLY']
-
-        if language:
-            languages = list(filter(
-                lambda lang: lang['name'] == language.lower(),
-                languages
-            ))
-            if languages:
-                lang = str(languages[0]['id'])
+        Returns:
+            dict: dictionary of leaderboard
+        """
+        language, search_type = language.lower(), search_type.upper()
+        types = ["ALL", "DAILY", "WEEKLY"]
+        languages = self.get_languages()
+        languages_names = list(map(lambda lang: lang['name'], languages['result']))
+        languages_ids = list(map(lambda lang: lang['id'], languages['result']))
+        if language in languages_names:
+            if search_type in types:
+                id = languages_ids[languages_names.index(language)]
+                leaderboard = requests.get(self.leaderBoard_url.format(id, search_type)).json()['leaderboard']
+                return {'leaderboard': leaderboard}
             else:
-                raise Exception(f"Invalid language, '{language}' not found")
-        if type:
-            if not (type in types):
-                raise Exception(f"Invalid type, '{type}' not found")
-
-        request = requests.get(self.leaderBoard_url.format(lang, type)).json()
-        return request
+                raise Exception("Invalid search type, '%s' not found, search_type should be  %s"  % (search_type, ' or '.join(types)))
+            
+        else:
+            raise Exception("Unknown language, '%s' not found, language should be  %s" % (language, ' or '.join(languages_names)))
