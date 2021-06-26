@@ -10,6 +10,7 @@ class CoderHub():
         self.programming_languages_url= "https://api.coderhub.sa/api/challenges/programming-languages"
         self.leaderBoard_url = "https://api.coderhub.sa/api/leaderboard/?language={0}&offset=0&limit=10&type={1}"
         self.profile_url = "https://api.coderhub.sa/api/profile/public/{}"
+        self.user_statistics = "https://api.coderhub.sa/api/profile/public/get-user-statistics/{}"
         
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
@@ -134,3 +135,15 @@ class CoderHub():
             raise Exception(data['detail'])
         else:
             return data
+    def get_user_statistics(self, username:str):
+        """ Returns user statistics
+
+        Args:
+            username (str): name of user
+
+        Returns:
+            dict: dictionary of user statistics
+        """
+        user_id = self.get_profile(username=username)['user_information']['id']
+        data = requests.get(self.user_statistics.format(user_id)).json()
+        return data
