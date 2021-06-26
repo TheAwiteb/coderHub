@@ -240,7 +240,6 @@ print(coder_hub.get_profile(username="thamermashni"))
 **get user statistics:**
 ```python
 from coderHub import CoderHub
-from pprint import pprint
 coder_hub = CoderHub()
 
 print(coder_hub.get_user_statistics(username='thamermashni'))
