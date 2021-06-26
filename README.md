@@ -40,6 +40,7 @@ git clone https://github.com/Awiteb/coderHub
 * get challenge by id
 * get all languages info or by language name
 * get top 10 leaderboard by programming language
+* get user challenges info
 
 ## Usage
 
@@ -165,6 +166,69 @@ print(coder_hub.get_leaderBoard(language="Python", search_type="DAILY"))
     }
   ]
 }
+
+```
+
+</details>
+<br><br>
+
+**get user profile:**
+```python
+from coderHub import CoderHub
+
+coder_hub = CoderHub()
+
+print(coder_hub.get_profile(username="thamermashni"))
+```
+<details>
+<summary> Example Result</summary>
+
+```json
+{'preferred_language': 'Python',
+ 'user_badges': [],
+ 'user_information': {'are_you_a_trainer': None,
+                      'bio': 'Computer Science fresh graduate from King Fahad '
+                             'University of Petroleum & Minerals',
+                      'certificates': [{'expired': False,
+                                        'expires_at': '2021-02-01T00:00:00+00:00',
+                                        'institution': 'Udacity',
+                                        'is_training_certificate': False,
+                                        'name': 'Full-Stack Developer '
+                                                'Nanodegree',
+                                        'received_at': '2020-12-04T00:00:00+00:00'}],
+                      'city': 'ابها',
+                      'country_name': 'المملكة العربية السعودية',
+                      'education': [{'end_at': '2020-02-17T00:00:00+00:00',
+                                     'institution': 'جامعة الملك فهد للبترول '
+                                                    'والمعادن',
+                                     'major': 'Computer Science',
+                                     'name': 'bachelor',
+                                     'start_at': '2014-02-17T00:00:00+00:00'}],
+                      'extra_public_fields': [],
+                      'first_name': 'ثامر',
+                      'id': 'fd0c7a26-e1de-40f8-af51-8be885a59e3b',
+                      'is_looking_for_job': None,
+                      'last_name': 'مشني',
+                      'looking_for_job_type': None,
+                      'occupation': None,
+                      'preferred_language': None,
+                      'programming_languages': [{'experience': 'أقل من سنة',
+                                                 'programming_language': 'Java'},
+                                                {'experience': 'أقل من سنة',
+                                                 'programming_language': 'JavaScript'},
+                                                {'experience': 'أقل من سنة',
+                                                 'programming_language': 'Python'},
+                                                {'experience': 'أقل من سنة',
+                                                 'programming_language': 'SQL'},
+                                                {'experience': 'أقل من سنة',
+                                                 'programming_language': 'C#'}],
+                      'public_profile': True,
+                      'social_links': [{'handle': 'ThamerMashni',
+                                        'site': 'GITHUB'},
+                                       {'handle': 'thamermashni',
+                                        'site': 'LINKEDIN'},
+                                       {'handle': '', 'site': 'TWITTER'}],
+                      'username': 'thamermashni'}}
 
 ```
 
