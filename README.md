@@ -37,6 +37,7 @@ git clone https://github.com/Awiteb/coderHub
 ## Features
 
 * get all challenges or by difficulty
+* search for challenges
 * get challenge by id
 * get all languages info or by language name
 * get top 10 leaderboard by programming language
@@ -76,6 +77,43 @@ print(coder_hub.get_challenges(difficulty="easy"))
     'type_of_level': {'id': 2, 'name': 'سهل'}
     }
 }
+```
+</details>
+<br><br>
+
+**search for challenges:**
+```python
+from coderHub import CoderHub
+coder_hub = CoderHub()
+
+print(coder_hub.search_challenges("تاريخ"))
+```
+<details>
+<summary> Example Result</summary>
+
+```json
+{'count': 2,
+ 'result': [{'challenge_programming_languages': [],
+             'challenge_tags': [{'name': 'Date'}, {'name': 'String'}],
+             'created_by': {'public': False, 'username': 'CoderHub'},
+             'creator_role': 'admin',
+             'hint_points': None,
+             'hint_text': None,
+             'id': 'c93a5e09-2578-42ec-95db-88d1e87d6459',
+             'points': 10,
+             'title': 'تاريخ اليوم',
+             'type_of_level': {'id': 3, 'name': 'متوسط'}},
+            {'challenge_programming_languages': [],
+             'challenge_tags': [{'name': 'Date'}, {'name': 'String'}],
+             'created_by': {'public': False, 'username': 'CoderHub'},
+             'creator_role': 'admin',
+             'hint_points': None,
+             'hint_text': None,
+             'id': 'a2df08ef-faa1-4aaf-bbd5-66f7e021855a',
+             'points': 10,
+             'title': 'تعديل صيغة التاريخ',
+             'type_of_level': {'id': 3, 'name': 'متوسط'}}]}
+
 ```
 </details>
 <br><br>
