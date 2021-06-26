@@ -8,6 +8,7 @@ class CoderHub():
         self.get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
         self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
         self.programming_languages_url= "https://api.coderhub.sa/api/challenges/programming-languages"
+        self.leaderBoard_url = "https://api.coderhub.sa/api/leaderboard/?language={0}&offset=0&limit=10&type={1}"
 
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
@@ -84,3 +85,34 @@ class CoderHub():
                 raise Exception(f"Invalid language, '{language}' not found")
         else:
             return {'result':languages}
+
+    def get_leaderBoard(self, language: str, search_type: Optional[Union[str]] = "ALL"):
+        """ get first 10 users in leaderboard of language, in all time or by type
+            type should be in [ALL, DAILY, WEEKLY]
+
+        Args:
+            language (str): The programming language you want to have its own leaderboard 
+            search_type (Optional[Union[str]], optional): type of search. Defaults to "ALL".
+
+        Raises:
+            Exception: Unknown language, language not found
+            Exception: invalid search type, type not found
+
+        Returns:
+            dict: dictionary of leaderboard
+        """
+        language, search_type = language.lower(), search_type.upper()
+        types = ["ALL", "DAILY", "WEEKLY"]
+        languages = self.get_languages()
+        languages_names = list(map(lambda lang: lang['name'], languages['result']))
+        languages_ids = list(map(lambda lang: lang['id'], languages['result']))
+        if language in languages_names:
+            if search_type in types:
+                id = languages_ids[languages_names.index(language)]
+                leaderboard = requests.get(self.leaderBoard_url.format(id, search_type)).json()['leaderboard']
+                return {'leaderboard': leaderboard}
+            else:
+                raise Exception("Invalid search type, '%s' not found, search_type should be  %s"  % (search_type, ' or '.join(types)))
+            
+        else:
+            raise Exception("Unknown language, '%s' not found, language should be  %s" % (language, ' or '.join(languages_names)))
