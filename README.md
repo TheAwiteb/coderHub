@@ -41,6 +41,7 @@ git clone https://github.com/Awiteb/coderHub
 * get all languages info or by language name
 * get top 10 leaderboard by programming language
 * get user profile info
+* get user statistics info
 
 ## Usage
 
@@ -230,6 +231,41 @@ print(coder_hub.get_profile(username="thamermashni"))
                                        {'handle': '', 'site': 'TWITTER'}],
                       'username': 'thamermashni'}}
 
+```
+
+</details>
+<br><br>
+
+
+**get leaderboard:**
+```python
+from coderHub import CoderHub
+from pprint import pprint
+coder_hub = CoderHub()
+
+print(coder_hub.get_user_statistics(username='thamermashni'))
+```
+<details>
+<summary> Example Result</summary>
+
+```json
+{'programming_languages': [{'name': 'سهل',
+                            'programming_language_name': 'Python',
+                            'solved_challenges': 58},
+                           {'name': 'صعب',
+                            'programming_language_name': 'Python',
+                            'solved_challenges': 11},
+                           {'name': 'متوسط',
+                            'programming_language_name': 'Python',
+                            'solved_challenges': 31},
+                           {'name': 'متوسط',
+                            'programming_language_name': 'JavaScript',
+                            'solved_challenges': 1}],
+ 'total_solved_challenges': 101,
+ 'total_solved_per_programming_language': [{'programming_language_name': 'JavaScript',
+                                            'total_solved': 1},
+                                           {'programming_language_name': 'Python',
+                                            'total_solved': 100}]}
 ```
 
 </details>
