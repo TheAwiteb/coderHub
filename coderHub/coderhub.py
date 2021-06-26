@@ -5,12 +5,13 @@ from typing import Optional, Union
 
 class CoderHub():
     def __init__(self):
-        self.get_challenge_url = "https://api.coderhub.sa/api/challenges/detail/{}"
-        self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
-        self.programming_languages_url= "https://api.coderhub.sa/api/challenges/programming-languages"
-        self.leaderBoard_url = "https://api.coderhub.sa/api/leaderboard/?language={0}&offset=0&limit=10&type={1}"
-        self.profile_url = "https://api.coderhub.sa/api/profile/public/{}"
-        self.user_statistics = "https://api.coderhub.sa/api/profile/public/get-user-statistics/{}"
+        self.host = "https://api.coderhub.sa/api"
+        self.get_challenge_url = self.host+"/challenges/detail/{}"
+        self.challenges_url = self.host+"/challenges/filtered-list/?page_size=9999999999&query="
+        self.programming_languages_url= self.host+"/challenges/programming-languages"
+        self.leaderBoard_url = self.host+"/leaderboard/?language={0}&offset=0&limit=10&type={1}"
+        self.profile_url = self.host+"/profile/public/{}"
+        self.user_statistics = self.host+"/profile/public/get-user-statistics/{}"
         
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
