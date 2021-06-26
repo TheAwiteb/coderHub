@@ -39,6 +39,7 @@ git clone https://github.com/Awiteb/coderHub
 * get all challenges or by difficulty
 * get challenge by id
 * get all languages info or by language name
+* get top 10 leaderboard by programming language
 
 ## Usage
 
@@ -142,6 +143,33 @@ print(coder_hub.get_languages(language="python"))
 </details>
 <br><br>
 
+</details>
+<br><br>
+
+**get leaderboard:**
+```python
+from coderHub import CoderHub
+
+coder_hub = CoderHub()
+
+print(coder_hub.get_leaderBoard(language="Python", search_type="DAILY"))
+```
+<details>
+<summary> Example Result</summary>
+
+```json
+{
+  'leaderboard': 
+  [
+    {'points': 5, 'total_time': 12.155752, 'user_id': '8e0d0f0c-6884-4a9e-a28a-b9d6f3094407', 'rank': 1, 'user_info': {'username': 'ismm', 'public': False}
+    }
+  ]
+}
+
+```
+
+</details>
+<br><br>
 
 ## LICENSE
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
