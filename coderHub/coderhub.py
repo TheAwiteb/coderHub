@@ -9,7 +9,8 @@ class CoderHub():
         self.challenges_url = "https://api.coderhub.sa/api/challenges/filtered-list/?page_size=9999999999"
         self.programming_languages_url= "https://api.coderhub.sa/api/challenges/programming-languages"
         self.leaderBoard_url = "https://api.coderhub.sa/api/leaderboard/?language={0}&offset=0&limit=10&type={1}"
-
+        self.profile_url = "https://api.coderhub.sa/api/profile/public/{}"
+        
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
         difficulty should be in ['easy', 'normal', 'hard']
@@ -116,3 +117,20 @@ class CoderHub():
             
         else:
             raise Exception("Unknown language, '%s' not found, language should be  %s" % (language, ' or '.join(languages_names)))
+    def get_profile(self, username:str):
+        """ Returns profile for username
+
+        Args:
+            username (str): username of user
+
+        Raises:
+            Exception: ['user profile is not public', 'user profile is not found']
+
+        Returns:
+            dict: dictionary of user data
+        """
+        data = requests.get(self.profile_url.format(username.lower())).json()
+        if "detail" in data.keys():
+            raise Exception(data['detail'])
+        else:
+            return data
