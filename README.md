@@ -237,7 +237,7 @@ print(coder_hub.get_profile(username="thamermashni"))
 <br><br>
 
 
-**get leaderboard:**
+**get user statistics:**
 ```python
 from coderHub import CoderHub
 from pprint import pprint
