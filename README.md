@@ -40,7 +40,7 @@ git clone https://github.com/Awiteb/coderHub
 * get challenge by id
 * get all languages info or by language name
 * get top 10 leaderboard by programming language
-* get user challenges info
+* get user profile info
 
 ## Usage
 
