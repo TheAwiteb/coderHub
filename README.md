@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a><img src="./img/coderHub.sa.jpeg" alt="coderHub.sa - img"></a>
+  <a><img src="https://pbs.twimg.com/media/E43nR_kX0AMalxJ?format=jpg&name=small" alt="coderHub.sa - img"></a>
   <br>
   coderHub
   <br>
@@ -9,6 +9,12 @@
 
 <p align="center">A python method based on the API of the <a href=https://coderhub.sa>coderHub.sa</a>, which helps you to fetch the challenges and more
 <p align="center">
+  <a href="https://pypi.org/project/coderHub/">
+    <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/coderHub?color=9cf">
+  </a>
+  <a href="https://pypi.org/project/coderHub/">
+    <img alt="PyPI" src="https://img.shields.io/pypi/v/coderHub?color=9cf">
+  </a>
   <a href="https://www.gnu.org/licenses/gpl-3.0.html">
     <img src="https://img.shields.io/pypi/l/quran-suras?color=9cf&label=License" alt="License">
   </a>
@@ -28,10 +34,10 @@
 
 ## Installation
 
-Use [GitHub](https://github.com) to install coderHub.
+Use [pypi](https://pypi.org) to install coderHub.
 
 ```bash
-git clone https://github.com/Awiteb/coderHub
+pip3 install coderHub
 ```
 
 ## Features
@@ -86,7 +92,7 @@ print(coder_hub.get_challenges(difficulty="easy"))
 from coderHub import CoderHub
 coder_hub = CoderHub()
 
-print(coder_hub.search_challenges("تاريخ"))
+print(coder_hub.search_challenges(word="تاريخ"))
 ```
 <details>
 <summary> Example Result</summary>
@@ -123,7 +129,7 @@ print(coder_hub.search_challenges("تاريخ"))
 from coderHub import CoderHub
 
 coder_hub = CoderHub()
-print(coder_hub.get_challenge_by_id('3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4'))
+print(coder_hub.get_challenge_by_id(id='3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4'))
 ```
 <details>
 <summary> Example Result</summary>
