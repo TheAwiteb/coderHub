@@ -46,7 +46,7 @@ class CoderHub():
         else:
             raise Exception("There are no challenges available about '%s'" % word)
 
-    def get_challenge_by_id(self, id: str):
+    def get_challenge_by_id(self, challenge_id: str):
         """ Returns challenge object by id
 
         Args:
@@ -58,7 +58,7 @@ class CoderHub():
         Returns:
             dict: object of challenge
         """
-        request = requests.get(self.get_challenge_url.format(id))
+        request = requests.get(self.get_challenge_url.format(challenge_id))
         if request.status_code == 200:
             return request.json()
         else:

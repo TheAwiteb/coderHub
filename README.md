@@ -129,7 +129,7 @@ print(coder_hub.search_challenges(word="تاريخ"))
 from coderHub import CoderHub
 
 coder_hub = CoderHub()
-print(coder_hub.get_challenge_by_id(id='3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4'))
+print(coder_hub.get_challenge_by_id(challenge_id='3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4'))
 ```
 <details>
 <summary> Example Result</summary>
