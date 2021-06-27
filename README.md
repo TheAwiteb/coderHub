@@ -37,7 +37,9 @@
 Use [pypi](https://pypi.org) to install coderHub.
 
 ```bash
-pip3 install coderHub
+# soon we will use pypi
+git clone https://github.com/Awiteb/coderHub
+pip3 install -e coderHub
 ```
 
 ## Features
