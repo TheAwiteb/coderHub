@@ -15,7 +15,7 @@ class CoderHub():
         
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
         """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
-        difficulty should be in ['easy', 'normal', 'hard']
+        difficulty should be in ['سهل', 'متوسط', 'صعب']
 
         Args:
             difficulty (Optional[Union[str, None]], optional): difficulty of challenges. Defaults to None.
@@ -27,12 +27,11 @@ class CoderHub():
             dict: dictionary of challenges
         """
         challenges = requests.get(self.challenges_url).json()
-        difficulty_list = ['easy', 'normal', 'hard']
+        difficulty_list = ['سهل', 'متوسط', 'صعب']
         if difficulty:
             if difficulty in difficulty_list:
-                difficulty_id = difficulty_list.index(difficulty) + 2 # coderHub count start from 2
                 return {'result':list(filter(
-                    lambda challenge: challenge['type_of_level']['id'] == difficulty_id,
+                    lambda challenge: challenge['type_of_level']['name'] == difficulty,
                         challenges['result']))}
             else:
                 raise Exception(f"difficulty must be {' or '.join(difficulty_list)}")
