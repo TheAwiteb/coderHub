@@ -1,2 +1,6 @@
 venv
 __pycache__
+
+# Pypi
+coderHub.egg-info
+dist
