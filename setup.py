@@ -1,6 +1,6 @@
 import setuptools
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 README_FILENAME = "README.md"
 KEYWORD = ['coderHub', 'programming challenges', 'challenges',]
 
