@@ -12,7 +12,7 @@ with open("./requirements.txt", encoding="utf-8") as require_file:
 setuptools.setup(
     name="coderHub",
     version=VERSION,
-    author="https://github.com/Awiteb",
+    author="Awiteb",
     author_email="Awiteb@hotmail.com",
     description="A python method based on the API of the coderHub.sa, which helps you to fetch the challenges and more",
     long_description=long_description,
