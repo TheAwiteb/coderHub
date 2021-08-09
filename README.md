@@ -31,6 +31,7 @@
   <a href="#license">License</a>
 </p>
 
+> This project is a personal effort and CoderHub has nothing to do with the content of this project.
 
 ## Installation
 
