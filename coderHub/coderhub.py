@@ -3,154 +3,187 @@ import requests
 from typing import Optional, Union
 
 
-class CoderHub():
+class CoderHub:
     def __init__(self):
         self.host = "https://api.coderhub.sa/api"
-        self.get_challenge_url = self.host+"/challenges/detail/{}"
-        self.challenges_url = self.host+"/challenges/filtered-list/?page_size=9999999999&query="
-        self.programming_languages_url= self.host+"/challenges/programming-languages"
-        self.leaderBoard_url = self.host+"/leaderboard/?language={0}&offset=0&limit=10&type={1}"
-        self.profile_url = self.host+"/profile/public/{}"
-        self.user_statistics = self.host+"/profile/public/get-user-statistics/{}"
-        
-    def get_challenges(self, difficulty: Optional[Union[str, None]] = None):
-        """ Returns all challenges by difficulty, if difficulty not None, else he will return all challenges
-        difficulty should be in ['سهل', 'متوسط', 'صعب']
+        self.get_challenge_url = self.host + "/challenges/detail/{}"
+        self.challenges_url = (
+            self.host + "/challenges/filtered-list/?page_size=9999999999&query="
+        )
+        self.programming_languages_url = self.host + "/challenges/programming-languages"
+        self.leaderBoard_url = (
+            self.host + "/leaderboard/?language={0}&offset=0&limit=10&type={1}"
+        )
+        self.profile_url = self.host + "/profile/public/{}"
+        self.user_statistics = self.host + "/profile/public/get-user-statistics/{}"
 
-        Args:
-            difficulty (Optional[Union[str, None]], optional): difficulty of challenges. Defaults to None.
-        
-        Raises:
-            Exception: Invalid difficulty
-        
-        Returns:
-            dict: dictionary of challenges
+    def get_challenges(self, difficulty: Optional[Union[str, None]] = None) -> dict:
+        """ارجاع جميع التحديات او عبر مستوى صعوبتها.
+        مستوى الصعوبة يجب ان يكون ضمن هاذيه الخيارات ['سهل', 'متوسط', 'صعب']
+
+        المتغيرات:
+            difficulty (str, None, optional): مستوى صعوبة التحديات. Defaults to None.
+
+        الاخطاء:
+            Exception: مستوى صعوبة خاطئ
+
+        المخرجات:
+            dict: قاموس يحتوي التحديات
         """
         challenges = requests.get(self.challenges_url).json()
-        difficulty_list = ['سهل', 'متوسط', 'صعب']
+        difficulty_list = ["سهل", "متوسط", "صعب"]
         if difficulty:
             if difficulty in difficulty_list:
-                return {'result':list(filter(
-                    lambda challenge: challenge['type_of_level']['name'] == difficulty,
-                        challenges['result']))}
+                return {
+                    "result": list(
+                        filter(
+                            lambda challenge: challenge["type_of_level"]["name"]
+                            == difficulty,
+                            challenges["result"],
+                        )
+                    )
+                }
             else:
                 raise Exception(f"difficulty must be {' or '.join(difficulty_list)}")
         else:
-            return {'result':challenges['result']}
-    
-    def search_challenges(self, word: str):
-        data = requests.get(self.challenges_url+word).json()
-        if data['count'] > 0:
+            return {"result": challenges["result"]}
+
+    def search_challenges(self, word: str) -> dict:
+        """البحث عن تحدي
+
+        المتغيرات:
+            word (str): الكلمة او النص الذي تريد البحث عنه
+
+        الاخطاء:
+            Exception: عدم وجود نتائج جول الكلمة التي تبحث عنها
+
+        المخرجات:
+            dict: قاموس يحتوي النتائج
+        """
+        data = requests.get(self.challenges_url + word).json()
+        if data["count"]:
             return data
         else:
             raise Exception("There are no challenges available about '%s'" % word)
 
-    def get_challenge_by_id(self, challenge_id: str):
-        """ Returns challenge object by id
+    def get_challenge_by_id(self, challenge_id: str) -> dict:
+        """ارجاع محتوى التحدي عبر الايدي الخاص به
 
-        Args:
-            id (str): id of challenge
+        المتغيرات:
+            id (str): ايدي التحدي
 
-        Raises:
-            Exception: Invalid challenge id
+        الاخطاء:
+            Exception: ايدي تحدي خاطئ
 
-        Returns:
-            dict: object of challenge
+        المخرجات:
+            dict: محتوى التحدي
         """
-        request = requests.get(self.get_challenge_url.format(challenge_id))
-        if request.status_code == 200:
-            return request.json()
+        challenge_response = requests.get(self.get_challenge_url.format(challenge_id))
+        if challenge_response.ok:
+            return challenge_response.json()
         else:
-            raise Exception("Invalid challenge id: challenge not found")
-    
-    def get_languages(self, language: Optional[Union[str, None]] = None):
-        """ Returns all objects of languages if language = None, else object by language
+            raise Exception("Invalid challenge id: %s not found" % challenge_id)
 
-        Args:
-            language (Optional[Union[str, None]], optional): language you want. Defaults to None.
+    def get_languages(self, language: Optional[Union[str, None]] = None) -> dict:
+        """ارجاع جميع لغات البرمجة التي يدعمها الموقع او لغة محددة
 
-        Raises:
-            Exception: Language not found
-            
-        Returns:
-            dict: object of language or languages
+        المتغيرات:
+            language (str, None, optional): اللغة التي تريدها. Defaults to None.
+
+        الاخطاء:
+            Exception: اللغة غير موجودة
+
+        المخرجات:
+            dict: اللغة او اللغات
         """
-        languages = list(map(
-                    lambda lang: {'id': lang['id'], 
-                                        'name': lang['name'].lower(), 
-                                            'version': lang['version']},
-                    requests.get(self.programming_languages_url).json()))
+        languages = list(
+            map(
+                lambda lang: {
+                    "id": lang["id"],
+                    "name": lang["name"].lower(),
+                    "version": lang["version"],
+                },
+                requests.get(self.programming_languages_url).json(),
+            )
+        )
         if language:
-            if type(language) == str:
-                languages = list(filter(
-                    lambda lang: lang['name'] == language.lower(),
-                    languages
-                ))
-            else:
-                languages = [] # empty list, because invalid language
+            languages = list(
+                filter(lambda lang: lang["name"] == language.lower(), languages)
+            )
             if languages:
                 return languages[0]
             else:
                 raise Exception(f"Invalid language, '{language}' not found")
         else:
-            return {'result':languages}
+            return {"result": languages}
 
-    def get_leaderBoard(self, language: str, search_type: Optional[Union[str]] = "ALL"):
-        """ get first 10 users in leaderboard of language, in all time or by type
-            type should be in [ALL, DAILY, WEEKLY]
+    def get_leaderBoard(
+        self, language: str, search_type: Optional[Union[str]] = "ALL"
+    ) -> dict:
+        """ارجاع اول 10 في لوحة المتصدرين
+            نوع البحث يجب ان يكون من هاذه المصفوفة [ALL, DAILY, WEEKLY]
 
-        Args:
-            language (str): The programming language you want to have its own leaderboard 
-            search_type (Optional[Union[str]], optional): type of search. Defaults to "ALL".
+        المتغيرات:
+            language (str): لغة البرمجة التي تريد منها المتصدرين
+            search_type (Optional[Union[str]], optional): نوع البحث. Defaults to "ALL".
 
-        Raises:
-            Exception: Unknown language, language not found
-            Exception: invalid search type, type not found
+        الاخطاء:
+            Exception: Unknown language, لغة برمجة غير موجودة
+            Exception: invalid search type, نوع البحث غير موجود
 
-        Returns:
-            dict: dictionary of leaderboard
+        المخرجات:
+            dict: قاموس يحتوي المتصدرين
         """
         language, search_type = language.lower(), search_type.upper()
         types = ["ALL", "DAILY", "WEEKLY"]
         languages = self.get_languages()
-        languages_names = list(map(lambda lang: lang['name'], languages['result']))
-        languages_ids = list(map(lambda lang: lang['id'], languages['result']))
+        languages_names = list(map(lambda lang: lang["name"], languages["result"]))
+        languages_ids = list(map(lambda lang: lang["id"], languages["result"]))
         if language in languages_names:
             if search_type in types:
                 id = languages_ids[languages_names.index(language)]
-                leaderboard = requests.get(self.leaderBoard_url.format(id, search_type)).json()['leaderboard']
-                return {'leaderboard': leaderboard}
+                leaderboard = requests.get(
+                    self.leaderBoard_url.format(id, search_type)
+                ).json()["leaderboard"]
+                return {"leaderboard": leaderboard}
             else:
-                raise Exception("Invalid search type, '%s' not found, search_type should be  %s"  % (search_type, ' or '.join(types)))
-            
+                raise Exception(
+                    "Invalid search type, '%s' not found, search_type should be  %s"
+                    % (search_type, " or ".join(types))
+                )
         else:
-            raise Exception("Unknown language, '%s' not found, language should be  %s" % (language, ' or '.join(languages_names)))
-    def get_profile(self, username:str):
-        """ Returns profile for username
+            raise Exception(
+                "Unknown language, '%s' not found, language should be  %s"
+                % (language, " or ".join(languages_names))
+            )
 
-        Args:
-            username (str): username of user
+    def get_profile(self, username: str) -> dict:
+        """ارجاع الملف التعريفي الخاص باسم المستخدم
 
-        Raises:
+        المتغيرات:
+            username (str): اسم المستخدم الذي تريد الملف التعريفي الخاص به
+
+        الاخطاء:
             Exception: ['user profile is not public', 'user profile is not found']
 
-        Returns:
-            dict: dictionary of user data
+        المخرجات:
+            dict: قاموس يحتوي الملف التعريفي
         """
         data = requests.get(self.profile_url.format(username.lower())).json()
         if "detail" in data.keys():
-            raise Exception(data['detail'])
+            raise Exception(data["detail"])
         else:
             return data
-    def get_user_statistics(self, username:str):
-        """ Returns user statistics
 
-        Args:
-            username (str): name of user
+    def get_user_statistics(self, username: str) -> dict:
+        """ارجاع إحصائيات المستخدم
 
-        Returns:
-            dict: dictionary of user statistics
+        المتغيرات:
+            username (str): اسم المستخدم الذي تريد إحصائياته
+
+        المخرجات:
+            dict: قاموس يحتوي إحصائيات المستخدم
         """
-        user_id = self.get_profile(username=username)['user_information']['id']
+        user_id = self.get_profile(username=username)["user_information"]["id"]
         data = requests.get(self.user_statistics.format(user_id)).json()
         return data
