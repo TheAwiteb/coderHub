@@ -19,7 +19,6 @@ class CoderHub:
 
     def get_challenges(self, difficulty: Optional[Union[str, None]] = None) -> dict:
         """ارجاع جميع التحديات او عبر مستوى صعوبتها.
-        مستوى الصعوبة يجب ان يكون ضمن هاذيه الخيارات ['سهل', 'متوسط', 'صعب']
 
         المتغيرات:
             difficulty (str, None, optional): مستوى صعوبة التحديات. Defaults to None.
@@ -30,23 +29,35 @@ class CoderHub:
         المخرجات:
             dict: قاموس يحتوي التحديات
         """
+        # حلب جميع التحديات
         challenges = requests.get(self.challenges_url).json()
-        difficulty_list = ["سهل", "متوسط", "صعب"]
+        # انشاء مصفوفة بمستوى صعوبة التحديات
+        difficulty_list = set(
+            map(
+                lambda challenge: challenge["type_of_level"]["name"],
+                challenges["result"],
+            )
+        )
+        # اذا تم طلب مستوى صعوبة معين
         if difficulty:
+            # اذا كان مستوى الصعوبة المطلوب في مصفوفة المستويات
             if difficulty in difficulty_list:
-                return {
-                    "result": list(
-                        filter(
-                            lambda challenge: challenge["type_of_level"]["name"]
-                            == difficulty,
-                            challenges["result"],
-                        )
+                # عمل فلتر للتحديات وجلب فقط الحديات التي لديها نفس مستوى الصعوبة
+                result = list(
+                    filter(
+                        lambda challenge: challenge["type_of_level"]["name"]
+                        == difficulty,
+                        challenges["result"],
                     )
-                }
+                )
+                # ارجاع التحديات مع عددها
+                return {"count": len(result), "result": result}
             else:
+                # اظهار خطأ اذا كان مستوى الصعوبة غير موجود
                 raise Exception(f"difficulty must be {' or '.join(difficulty_list)}")
         else:
-            return {"result": challenges["result"]}
+            # ارجاع جميع التحديات مع عددها
+            return challenges
 
     def search_challenges(self, word: str) -> dict:
         """البحث عن تحدي

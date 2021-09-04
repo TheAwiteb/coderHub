@@ -68,21 +68,10 @@ print(coder_hub.get_challenges())
 print(coder_hub.get_challenges(difficulty="سهل"))
 ```
 <details>
-<summary> Example for first Result</summary>
+<summary> Example Result</summary>
 
 ```json
-{
-    "result": [
-        {
-            "challenge_tags": [{"name": "Math"}],
-            "created_by": {"username": "CoderHub"},
-            "id": "3e420f85-f4e9-4e7a-b6bc-f35a8db70cb4",
-            "points": 5,
-            "title": "طرح عددين",
-            "type_of_level": {"name": "سهل"}
-        }
-    ]
-}
+{"count": 99, "result": [{...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, {...}, ...]}
 ```
 </details>
 <br><br>
