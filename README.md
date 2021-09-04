@@ -18,6 +18,9 @@
   <a href="https://www.gnu.org/licenses/gpl-3.0.html">
     <img src="https://img.shields.io/pypi/l/quran-suras?color=9cf&label=License" alt="License">
   </a>
+  <a href="https://github.com/psf/black">
+    <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
+  </a>
 </p>
 
 
