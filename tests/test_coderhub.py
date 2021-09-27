@@ -55,6 +55,8 @@ def test_get_leaderBoard():
     assert coderhub.get_leaderBoard(language="Python", search_type="ALL")
     assert coderhub.get_leaderBoard(language="Python", search_type="WEEKLY")
     assert coderhub.get_leaderBoard(language="Python", search_type="DAILY")
+    assert coderhub.get_leaderBoard(language="Python", page=2)
+    assert coderhub.get_leaderBoard(language="Python", page=999_999_999)
     try_catch(coderhub.get_leaderBoard, RANDOM_TEXT, "ALL")
     try_catch(coderhub.get_leaderBoard, "Python", RANDOM_TEXT)
 
