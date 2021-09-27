@@ -1,8 +1,12 @@
 import setuptools
 
-VERSION = "1.1.1"
+VERSION = "1.1.2"
 README_FILENAME = "README.md"
-KEYWORD = ['coderHub', 'programming challenges', 'challenges',]
+KEYWORD = [
+    "coderHub",
+    "programming challenges",
+    "challenges",
+]
 
 with open(README_FILENAME, "r", encoding="utf-8") as readme_file:
     long_description = readme_file.read()
@@ -17,7 +21,7 @@ setuptools.setup(
     description="A python method based on the API of the coderHub.sa, which helps you to fetch the challenges and more",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Awiteb/coderHub",
+    url="https://github.com/TheAwiteb/coderHub",
     packages=setuptools.find_packages(),
     keywords=KEYWORD,
     classifiers=[
@@ -28,6 +32,6 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.7',
+    python_requires=">=3.7",
     install_requires=requires,
 )
