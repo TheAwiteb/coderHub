@@ -29,7 +29,9 @@
   •
   <a href="#features">Features</a>
   •
-  <a href="#usage">Usage</a>
+  <a href="#coderhub-usage">CoderHub Usage</a>
+  •
+  <a href="#coderhubstats-usage">CoderHubStats Usage</a>
   •
   <a href="#license">License</a>
 </p>
@@ -57,7 +59,7 @@ pip3 install coderHub
 * get summary statistics for all challenges
 * get a datatable containing top 10 users and thier data for every language ready for analyse
 
-## Usage
+## CoderHub-Usage
 
 **get all challenges or by difficulty:**
 ```python
@@ -310,6 +312,8 @@ print(coder_hub.get_user_statistics(username="x7md"))
 
 </details>
 <br><br>
+
+## CoderHubStats-Usage
 
 **get the count of all challenges available(easy, medium and hard):**
 ```python
