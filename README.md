@@ -53,6 +53,9 @@ pip3 install coderHub
 * get top 10 leaderboard by programming language
 * get user profile info
 * get user statistics info
+## New Features 
+* get summary statistics for all challenges
+* get a datatable containing top 10 users and thier data for every language ready for analyse
 
 ## Usage
 
