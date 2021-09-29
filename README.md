@@ -7,7 +7,7 @@
 </h1>
 
 
-<p align="center">A python method based on the API of the <a href=https://coderhub.sa>coderHub.sa</a>, which helps you to fetch the challenges and more
+<p align="center">A python library built on the API of the <a href=https://coderhub.sa>coderHub.sa</a>, which helps you to fetch the challenges, get stats and more
 <p align="center">
   <a href="https://pypi.org/project/coderHub/">
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/coderHub?color=9cf">
@@ -29,7 +29,9 @@
   •
   <a href="#features">Features</a>
   •
-  <a href="#usage">Usage</a>
+  <a href="#coderhub-usage">CoderHub Usage</a>
+  •
+  <a href="#coderhubstats-usage">CoderHubStats Usage</a>
   •
   <a href="#license">License</a>
 </p>
@@ -53,8 +55,11 @@ pip3 install coderHub
 * get top 10 leaderboard by programming language
 * get user profile info
 * get user statistics info
+## New Features 
+* get summary statistics for all challenges
+* get a datatable containing top 10 users and thier data for every language ready for analyse
 
-## Usage
+## CoderHub-Usage
 
 **get all challenges or by difficulty:**
 ```python
@@ -307,6 +312,207 @@ print(coder_hub.get_user_statistics(username="x7md"))
 
 </details>
 <br><br>
+
+## CoderHubStats-Usage
+
+**get the count of all challenges available(easy, medium and hard):**
+```python
+from coderHub import CoderHubStats
+coderhub_stats = CoderHubStats()
+
+print(coderhub_stats.get_challenges_summary_stats()) # return a DataFrame
+```
+<details>
+<summary> Example Result</summary>
+
+```bash
+all_challenges                98.00
+easy_challenges               56.00
+medium_challenges             31.00
+hard_challenges               11.00
+easy_challenges_percentage    57.14
+medium_challenges_percentage  31.63
+hard_challenges_percentage    11.22
+
+```
+
+</details>
+<br><br>
+
+
+**get all programming languages names available:**
+```python
+from coderHub import CoderHubStats
+coderhub_stats = CoderHubStats()
+
+print(coderhub_stats.get_languages_names()) # return a list
+```
+<details>
+<summary> Example Result</summary>
+
+```bash
+['swift', 'python', 'javascript', 'java', 'c#', 'kotlin']
+```
+
+</details>
+<br><br>
+
+**get top 10 users and thier points in the leaderboard for every programming language:**
+```python
+from coderHub import CoderHubStats
+coderhub_stats = CoderHubStats()
+
+print(coderhub_stats.get_leaderboard_datatable()) # return a DataFrame
+```
+<details>
+<summary> Example Result</summary>
+
+```bash
+                users  points  rank    language
+0           ahmed0ksa   921.0     1       swift
+1             alxd7my   911.0     2       swift
+2               iX901   906.0     3       swift
+3           ahmadajr1   906.0     4       swift
+4              vdotup   906.0     5       swift
+5      LulwahAlmisfer   906.0     6       swift
+6          iam.that.1   901.0     7       swift
+7              fayadh   891.0     8       swift
+8           eengmaher   826.0     9       swift
+9           f.babkoor   820.0    10       swift
+10          TheAwiteb   926.0     1      python
+11           hamoud47   926.0     2      python
+12           dssaggaf   921.0     3      python
+13     fahad.alharthi   916.0     4      python
+14             maldum   916.0     5      python
+15       snap-aaa.saq   911.0     6      python
+16          thenajjar   906.0     7      python
+17             nnoaid   906.0     8      python
+18             asma94   906.0     9      python
+19           saud1983   906.0    10      python
+20        shuruqsaeed   931.0     1  javascript
+21  Ibrahim_Alrubayyi   931.0     2  javascript
+22               x7md   931.0     3  javascript
+23           ghadyana   926.0     4  javascript
+24              masha   921.0     5  javascript
+25          qabdull4h   916.0     6  javascript
+26     salehalibrahim   911.0     7  javascript
+27            aisha_j   911.0     8  javascript
+28                lum   911.0     9  javascript
+29     abdulrahmansbq   906.0    10  javascript
+30          sircaesar   916.0     1        java
+31         musaadtech   916.0     2        java
+32         abdullahmq   911.0     3        java
+33       haider_dev94   911.0     4        java
+34           alsenani   911.0     5        java
+35            alharbi   911.0     6        java
+36          jstsercuz   911.0     7        java
+37               arwa   911.0     8        java
+38      bandaralrooqi   911.0     9        java
+39             asma94   906.0    10        java
+40             salman    91.0     1          c#
+41        shuruqsaeed    91.0     2          c#
+42            amjad.a    91.0     3          c#
+43          ib.subaie    91.0     4          c#
+44             golag7    91.0     5          c#
+45           reham721    91.0     6          c#
+46     abdulrahmansbq    91.0     7          c#
+47          TheAwiteb    91.0     8          c#
+48             asma94    91.0     9          c#
+49           dssaggaf    91.0    10          c#
+50             salman    91.0     1      kotlin
+51     abdulrahmansbq    91.0     2      kotlin
+52             golag7    91.0     3      kotlin
+53           reham721    91.0     4      kotlin
+54        ahmadshahal    91.0     5      kotlin
+55            amjad.a    91.0     6      kotlin
+56              amira    91.0     7      kotlin
+57            sal7one    91.0     8      kotlin
+58       haider_dev94    91.0     9      kotlin
+59          TheAwiteb    91.0    10      kotlin
+
+```
+
+</details>
+<br><br>
+
+**get top 10 users, thier points and thier total solved challenges in the leaderboard for every programming language :**
+```python
+from coderHub import CoderHubStats
+coderhub_stats = CoderHubStats()
+
+print(coderhub_stats.get_top_users_stats()) # return a DataFrame
+```
+<details>
+<summary> Example Result</summary>
+
+```bash
+                users  points  rank    language total_challenges_solved
+0           ahmed0ksa   921.0     1       swift                     107
+1             alxd7my   911.0     2       swift                     106
+2               iX901   906.0     3       swift                     105
+3           ahmadajr1   906.0     4       swift                     105
+4              vdotup   906.0     5       swift                     105
+5      LulwahAlmisfer   906.0     6       swift                     105
+6          iam.that.1   901.0     7       swift                     105
+7              fayadh   891.0     8       swift                     103
+8           eengmaher   826.0     9       swift                     100
+9           f.babkoor   820.0    10       swift                     100
+10          TheAwiteb   926.0     1      python                     108
+11           hamoud47   926.0     2      python                     108
+12           dssaggaf   921.0     3      python                     107
+13     fahad.alharthi   916.0     4      python                     107
+14             maldum   916.0     5      python                     107
+15       snap-aaa.saq   911.0     6      python                     106
+16          thenajjar   906.0     7      python                     105
+17             nnoaid   906.0     8      python                 private
+18             asma94   906.0     9      python                     105
+19           saud1983   906.0    10      python                 private
+20        shuruqsaeed   931.0     1  javascript                     109
+21  Ibrahim_Alrubayyi   931.0     2  javascript                     109
+22               x7md   931.0     3  javascript                     109
+23           ghadyana   926.0     4  javascript                     108
+24              masha   921.0     5  javascript                     108
+25          qabdull4h   916.0     6  javascript                     106
+26     salehalibrahim   911.0     7  javascript                 private
+27            aisha_j   911.0     8  javascript                     106
+28                lum   911.0     9  javascript                 private
+29     abdulrahmansbq   906.0    10  javascript                     105
+30          sircaesar   916.0     1        java                     107
+31         musaadtech   916.0     2        java                     107
+32         abdullahmq   911.0     3        java                     106
+33       haider_dev94   911.0     4        java                     106
+34           alsenani   911.0     5        java                     106
+35            alharbi   911.0     6        java                     106
+36          jstsercuz   911.0     7        java                     106
+37               arwa   911.0     8        java                     106
+38      bandaralrooqi   911.0     9        java                     106
+39             asma94   906.0    10        java                     105
+40             salman    91.0     1          c#                       6
+41        shuruqsaeed    91.0     2          c#                       6
+42            amjad.a    91.0     3          c#                       6
+43          ib.subaie    91.0     4          c#                 private
+44             golag7    91.0     5          c#                 private
+45           reham721    91.0     6          c#                 private
+46     abdulrahmansbq    91.0     7          c#                       6
+47          TheAwiteb    91.0     8          c#                       6
+48             asma94    91.0     9          c#                       6
+49           dssaggaf    91.0    10          c#                       6
+50             salman    91.0     1      kotlin                       6
+51     abdulrahmansbq    91.0     2      kotlin                       6
+52             golag7    91.0     3      kotlin                 private
+53           reham721    91.0     4      kotlin                 private
+54        ahmadshahal    91.0     5      kotlin                 private
+55            amjad.a    91.0     6      kotlin                       6
+56              amira    91.0     7      kotlin                 private
+57            sal7one    91.0     8      kotlin                       6
+58       haider_dev94    91.0     9      kotlin                       6
+59          TheAwiteb    91.0    10      kotlin                       6
+
+```
+
+</details>
+<br><br>
+
 
 ## LICENSE
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
