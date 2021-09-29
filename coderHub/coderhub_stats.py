@@ -139,4 +139,3 @@ class CoderHubStats(CoderHub):
         print(f"total time : {end_timer - start_timer} seconds")
         return leaderboard_datatable
 
-
