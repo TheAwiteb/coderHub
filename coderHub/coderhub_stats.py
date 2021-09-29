@@ -4,10 +4,8 @@
 # - better function names
 # - add progress bar for functions that takes extra time
 
-
 import pandas as pd
 import time
-import statistics as st
 from coderhub import CoderHub
 
 
@@ -78,27 +76,67 @@ class CoderHubStats(CoderHub):
         languages_lst = leaderboard_datatable['language']
 
         total_solved_challenges = []  # total solved challenges for every user in top 10 leaderboard
+        total_solved_challenges_all_languages = []
+        total_easy_solved = []
+        total_med_solved = []
+        total_hard_solved = []
+        total_points = []
 
         start_timer = time.perf_counter()
 
         for index, user in enumerate(users_lst):
+            easy_challenges_counter = 0
+            med_challenges_counter = 0
+            hard_challenges_counter = 0
+
             try:
-                for user_languages in self.get_user_statistics(user)['total_solved_per_programming_language']:
+                user_data = self.get_user_statistics(user)
+                total_solved_challenges_all_languages.append(user_data['total_solved_challenges'])
+
+                for user_language in user_data['programming_languages']:
+                    if user_language['name'] == "سهل":
+                        easy_challenges_counter = easy_challenges_counter + user_language['solved_challenges']
+                    elif user_language['name'] == "متوسط":
+                        med_challenges_counter = med_challenges_counter + user_language['solved_challenges']
+                    else:
+                        hard_challenges_counter = hard_challenges_counter + user_language['solved_challenges']
+
+                total_easy_solved.append(easy_challenges_counter)
+                total_med_solved.append(med_challenges_counter)
+                total_hard_solved.append(hard_challenges_counter)
+
+                points = (easy_challenges_counter*5) + (med_challenges_counter*10) + (hard_challenges_counter*20)
+
+                total_points.append(points)
+
+                for user_languages in user_data['total_solved_per_programming_language']:
                     if user_languages['programming_language_name'].lower() == languages_lst[index].lower():
                         total_solved_challenges.append(user_languages['total_solved'])
                         break
                     else:
                         continue
-            except Exception as e:
+            except Exception:
                 # this exception will happen if user is private
+                total_easy_solved.append("private")
+                total_med_solved.append("private")
+                total_hard_solved.append("private")
+
+                total_points.append("private")
+
                 total_solved_challenges.append("private")
+                total_solved_challenges_all_languages.append("private")
                 continue
 
         end_timer = time.perf_counter()
 
         leaderboard_datatable.insert(4, "total_challenges_solved", total_solved_challenges)
+        leaderboard_datatable.insert(5, "total_challenges_solved_all_languages", total_solved_challenges_all_languages)
+        leaderboard_datatable.insert(6, "total_easy_solved", total_easy_solved)
+        leaderboard_datatable.insert(7, "total_medium_solved", total_med_solved)
+        leaderboard_datatable.insert(8, "total_hard_solved", total_hard_solved)
+        leaderboard_datatable.insert(9, "total_points_all_challenges", total_points)
 
         print(f"total time : {end_timer - start_timer} seconds")
-
         return leaderboard_datatable
+
 
