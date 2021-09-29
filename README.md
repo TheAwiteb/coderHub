@@ -7,7 +7,7 @@
 </h1>
 
 
-<p align="center">A python method based on the API of the <a href=https://coderhub.sa>coderHub.sa</a>, which helps you to fetch the challenges and more
+<p align="center">A python library built on the API of the <a href=https://coderhub.sa>coderHub.sa</a>, which helps you to fetch the challenges and more
 <p align="center">
   <a href="https://pypi.org/project/coderHub/">
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/coderHub?color=9cf">
