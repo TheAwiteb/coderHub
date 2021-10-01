@@ -1,15 +1,18 @@
 
 # todo :
-# - fix the function get_top_users_stats() time complexity
 # - better function names
 # - add progress bar for functions that takes extra time
 
 import pandas as pd
 import time
 from coderhub import CoderHub
+import threading
 
 
 class CoderHubStats(CoderHub):
+    users_data = {}
+    threads_lst = []
+
     # this function will return a pandas.DataFrame containing
     # all challenges count(easy, medium and hard) and its percentages
     def get_challenges_summary_stats(self):
@@ -67,8 +70,15 @@ class CoderHubStats(CoderHub):
         leaderboard_df.insert(0, "users", users_lst)
         return leaderboard_df
 
+    def fetch_user_data(self, user):
+        try:
+            user_data = self.get_user_statistics(user)
+            self.users_data[str(user)] = user_data
+        except:
+            self.users_data[str(user)] = "private"
+
     # based on get_leaderboard_datatable() this function will get solved challenges count for every
-    # user and append it to the given DataFrame and return it
+    # user retrieved and append it to the given DataFrame and return it
     def get_top_users_stats(self):
         leaderboard_datatable = self.get_leaderboard_datatable()
 
@@ -84,13 +94,19 @@ class CoderHubStats(CoderHub):
 
         start_timer = time.perf_counter()
 
+        for user in users_lst:
+            x = threading.Thread(target=self.fetch_user_data, args=(user,))
+            self.threads_lst.append(x)
+            x.start()
+        for thread in self.threads_lst:
+            thread.join()
+
         for index, user in enumerate(users_lst):
             easy_challenges_counter = 0
             med_challenges_counter = 0
             hard_challenges_counter = 0
-
-            try:
-                user_data = self.get_user_statistics(user)
+            user_data = self.users_data[str(user)]
+            if user_data != "private":
                 total_solved_challenges_all_languages.append(user_data['total_solved_challenges'])
 
                 for user_language in user_data['programming_languages']:
@@ -115,7 +131,7 @@ class CoderHubStats(CoderHub):
                         break
                     else:
                         continue
-            except Exception:
+            else:
                 # this exception will happen if user is private
                 total_easy_solved.append("private")
                 total_med_solved.append("private")
@@ -128,7 +144,6 @@ class CoderHubStats(CoderHub):
                 continue
 
         end_timer = time.perf_counter()
-
         leaderboard_datatable.insert(4, "total_challenges_solved", total_solved_challenges)
         leaderboard_datatable.insert(5, "total_challenges_solved_all_languages", total_solved_challenges_all_languages)
         leaderboard_datatable.insert(6, "total_easy_solved", total_easy_solved)
