@@ -1,8 +1,11 @@
+"""
 
-# todo :
-# - better function names
-# - add progress bar for functions that takes extra time
+the purpose of this file is to collect data from coderhub.sa API, prepare and group it
+to make it easier to start analysing the data
 
+"""
+
+import pandas
 import pandas as pd
 import time
 from coderhub import CoderHub
@@ -13,17 +16,35 @@ class CoderHubStats(CoderHub):
     users_data = {}
     threads_lst = []
 
-    # this function will return a pandas.DataFrame containing
-    # all challenges count(easy, medium and hard) and its percentages
-    def get_challenges_summary_stats(self):
+    def get_challenges_stats(self) -> pandas.DataFrame:
+        """
+        get easy challenges count, medium challenges count, hard
+            challenges count and aal challenges together count
+
+        Example result :
+            all_challenges                98.00
+            easy_challenges               56.00
+            medium_challenges             31.00
+            hard_challenges               11.00
+            easy_challenges_percentage    57.14
+            medium_challenges_percentage  31.63
+            hard_challenges_percentage    11.22
+
+        Returns:
+            pandas.Dataframe
+        Exceptions :
+            - requests.exceptions.ConnectionError
+        """
         load_data = CoderHub.get_challenges(self)
         df = pd.json_normalize(load_data['result'])
 
+        # count challenges
         all_challenges_count = len(df)
         easy_challenges_count = len(df[df["type_of_level.name"] == "سهل"])
         med_challenges_count = len(df[df["type_of_level.name"] == "متوسط"])
         hard_challenges_count = len(df[df["type_of_level.name"] == "صعب"])
 
+        # calculate challenges percentages
         easy_challenges_percentage = (easy_challenges_count/all_challenges_count)*100
         med_challenges_percentage = (med_challenges_count/all_challenges_count)*100
         hard_challenges_percentage = (hard_challenges_count/all_challenges_count)*100
@@ -33,7 +54,7 @@ class CoderHubStats(CoderHub):
         med_challenges_percentage = round(med_challenges_percentage, 2)
         hard_challenges_percentage = round(hard_challenges_percentage, 2)
 
-        challenges_summary_stats = {
+        challenges_stats = {
             'all_challenges': all_challenges_count,
             'easy_challenges': easy_challenges_count,
             'medium_challenges': med_challenges_count,
@@ -42,21 +63,42 @@ class CoderHubStats(CoderHub):
             'medium_challenges_percentage': med_challenges_percentage,
             'hard_challenges_percentage': hard_challenges_percentage
         }
-        return pd.DataFrame().from_dict(challenges_summary_stats, orient='index')
+        return pd.DataFrame().from_dict(challenges_stats, orient='index')
 
-    # return all programing languages names available in coderhub.sa
     def get_languages_names(self):
+        """
+        Returns:
+            a list containing all programing languages names available in coderhub.sa
+        Exceptions :
+            - requests.exceptions.ConnectionError
+        """
         load_data = CoderHub.get_languages(self)
         languages = [i['name'] for i in load_data['result']]
         return languages
 
-    # this function will return a DataFrame containing top 10 users and their points
-    def get_leaderboard_datatable(self):
+    def get_leaderboard_datatable(self) -> pandas.DataFrame:
+        """
+        get top 10 users for every language, their rank and their point from the leaderboard
+
+        Example result :
+                            users  points  rank    language
+            0           ahmed0ksa   921.0     1       swift
+            1             alxd7my   911.0     2       swift
+            2               iX901   906.0     3       swift
+            3           ahmadajr1   906.0     4       swift
+            4              vdotup   906.0     5       swift
+
+        Returns:
+            pandas.DataFrame
+        Exceptions :
+            - requests.exceptions.ConnectionError
+        """
         leaderboard_df = pd.DataFrame()
         pts_lst = []
         rnk_lst = []
         lng_lst = []
         users_lst = []
+
         for lang in self.get_languages_names():
             top10_users = self.get_leaderBoard(lang)['leaderboard']
             for user in top10_users:
@@ -71,21 +113,48 @@ class CoderHubStats(CoderHub):
         return leaderboard_df
 
     def fetch_user_data(self, user):
+        """
+        fetch user information (provided by the API) and append it to users_data dictionary, if user
+        profile is private the value will be 'private' for that user
+        Args:
+            user:
+                username that will be passed to get_user_statistics()
+        Returns:
+            None
+        Exceptions :
+        - requests.exceptions.ConnectionError
+        """
         try:
             user_data = self.get_user_statistics(user)
             self.users_data[str(user)] = user_data
-        except:
+        except Exception :
             self.users_data[str(user)] = "private"
 
-    # based on get_leaderboard_datatable() this function will get solved challenges count for every
-    # user retrieved and append it to the given DataFrame and return it
-    def get_top_users_stats(self):
+    def get_top_users_stats(self) -> pandas.DataFrame:
+        """
+        expand the data given from get_leaderboard_datatable() and add more information
+
+        Example result :
+                users	  points rank language	total_challenges_solved	 total_challenges_solved_all_languages  ...
+            0	ahmed0ksa	921	  1	  swift	        107	                        107
+            1	alxd7my	    911	  2	  swift	        106	                        114
+            2	iX901	    906	  3	  swift	        105	                        105
+            3	ahmadajr1	906	  4	  swift	        105	                        105
+            4	nnoaid	    906	  8	  python	  private	                  private
+            ...
+
+        Returns:
+            pandas.Dataframe
+
+        Exceptions :
+            - requests.exceptions.ConnectionError
+        """
         leaderboard_datatable = self.get_leaderboard_datatable()
 
         users_lst = leaderboard_datatable['users']
         languages_lst = leaderboard_datatable['language']
 
-        total_solved_challenges = []  # total solved challenges for every user in top 10 leaderboard
+        total_solved_challenges = []
         total_solved_challenges_all_languages = []
         total_easy_solved = []
         total_med_solved = []
@@ -144,6 +213,7 @@ class CoderHubStats(CoderHub):
                 continue
 
         end_timer = time.perf_counter()
+
         leaderboard_datatable.insert(4, "total_challenges_solved", total_solved_challenges)
         leaderboard_datatable.insert(5, "total_challenges_solved_all_languages", total_solved_challenges_all_languages)
         leaderboard_datatable.insert(6, "total_easy_solved", total_easy_solved)
@@ -153,4 +223,3 @@ class CoderHubStats(CoderHub):
 
         print(f"total time : {end_timer - start_timer} seconds")
         return leaderboard_datatable
-

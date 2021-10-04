@@ -317,11 +317,13 @@ print(coder_hub.get_user_statistics(username="x7md"))
 ## CoderHubStats-Usage
 
 **get the count of all challenges available(easy, medium and hard):**
+
 ```python
 from coderHub import CoderHubStats
+
 coderhub_stats = CoderHubStats()
 
-print(coderhub_stats.get_challenges_summary_stats()) # return a DataFrame
+print(coderhub_stats.get_challenges_stats())  # return a DataFrame
 ```
 <details>
 <summary> Example Result</summary>
